@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cart — Vishnu’s Antiq Gallery</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-flex">
+      <h1 class="site-title">Vishnu’s Antiq Gallery</h1>
+      <nav class="main-nav">
+        <a href="index.html">Home</a>
+        <a href="products.html">Collections</a>
+        <a href="cart.html" id="nav-cart-link">Cart (<span id="nav-cart-count">0</span>)</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container cart-page">
+    <h2>Your Cart</h2>
+    <div id="cart-items" class="cart-items">
+      <!-- items injected by JS -->
+    </div>
+
+    <div class="cart-actions">
+      <button id="clear-cart" class="btn">Clear Cart</button>
+      <a href="products.html" class="btn">Continue Shopping</a>
+      <a href="payment.html" id="checkout-btn" class="btn btn-primary">Proceed to Checkout</a>
+    </div>
+
+    <div class="cart-total">
+      <h3>Order Summary</h3>
+      <p>Subtotal: <strong id="cart-total">₹0</strong></p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Vishnu’s Antiq Gallery</p>
+    </div>
+  </footer>
+
+  <a class="whatsapp-float" href="https://wa.me/919999999999?text=Hi%20Vishnu%20Gallery%20I%20would%20like%20to%20order%20an%20antique" target="_blank" aria-label="WhatsApp">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
+  </a>
+
+  <script src="script.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    updateNavCartCount();
+    initCartPage();
+  </script>
+</body>
+</html>
