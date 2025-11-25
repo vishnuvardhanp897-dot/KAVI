@@ -1,0 +1,336 @@
+/* script.js
+   Handles products listing, search/filter, add-to-cart, cart persistence (localStorage),
+   remove/clear items, totals, checkout and order flow.
+*/
+
+/* -------------------------
+   Product Data (editable)
+   ------------------------- */
+(function(){
+  // product list available to all pages via window.getProducts()
+  const products = [
+    // Statues
+    { id: 's1', name: 'Bronze Temple Idol', price: 18500, category: 'Statues', image: 'https://images.unsplash.com/photo-1531095001844-2f5e5f7f3a5b?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=e1bd68b6d71c3a60b3d6147d158e7dd7' },
+    { id: 's2', name: 'Vintage Wooden Krishna Statue', price: 12000, category: 'Statues', image: 'https://images.unsplash.com/photo-1549880338-65ddcdfd017b?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=2e4d5e8f22bbd69cf3e3c4a3cc8b7ae8' },
+    { id: 's3', name: 'Brass Ganesha Idol', price: 9500, category: 'Statues', image: 'https://images.unsplash.com/photo-1542736667-069246bdbc43?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=0e9d0b6062e1d5a4c6de6c780b8f8b2f' },
+
+    // Coins & Currency
+    { id: 'c1', name: 'Ancient Roman Coin Replica', price: 3200, category: 'Coins & Currency', image: 'https://images.unsplash.com/photo-1524594154906-3b8f0d1a5a5a?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=0c8f9da761e1b5f8d39f8adf7d7c1e1c' },
+    { id: 'c2', name: 'Old Indian 1 Rupee Coin (1950s Collection)', price: 2800, category: 'Coins & Currency', image: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=0f3b2b8f5c8a4e3b9d1c2b3a4b5c6d7e' },
+    { id: 'c3', name: 'Vintage World Currency Set', price: 4500, category: 'Coins & Currency', image: 'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=9b2a4e6f5d3c2b1a9f8e7d6c5b4a3f2e' },
+
+    // Vintage Décor
+    { id: 'v1', name: 'Classic Gramophone Showpiece', price: 7800, category: 'Vintage Décor', image: 'https://images.unsplash.com/photo-1527694224015-1d26a4f2a56f?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=1b2f3c4d5e6f7a8b9c0d1e2f3a4b5c6d' },
+    { id: 'v2', name: 'Antique Wall Clock', price: 6900, category: 'Vintage Décor', image: 'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a' },
+    { id: 'v3', name: 'Vintage Lantern Lamp', price: 3600, category: 'Vintage Décor', image: 'https://images.unsplash.com/photo-1508061255064-9b9c9f8a0c4b?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=7a6b5c4d3e2f1a0b9c8d7e6f5b4a3c2d' },
+
+    // Collectible Items
+    { id: 'k1', name: 'Old Classic Book (Collector’s Edition)', price: 2200, category: 'Collectible Items', image: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=2b4c6d8e0f1a3b5c7d9e8f0a1b2c3d4e' },
+    { id: 'k2', name: 'Vintage Ink Pen Set', price: 1900, category: 'Collectible Items', image: 'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=6e5d4c3b2a1f0e9d8c7b6a5f4e3d2c1b' },
+    { id: 'k3', name: 'Handcrafted Wooden Jewelry Box', price: 3300, category: 'Collectible Items', image: 'https://images.unsplash.com/photo-1505691723518-36a5b3b8f6a7?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1' }
+  ];
+
+  // Expose getter
+  window.getProducts = function(){
+    return products.slice(); // return copy
+  };
+})();
+
+/* -------------------------
+   Utilities
+   ------------------------- */
+function formatINR(n){
+  return '₹' + n.toLocaleString('en-IN');
+}
+function uid(){
+  return 'id-' + Math.random().toString(36).slice(2,9);
+}
+function escapeHtml(text){
+  var map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+  return String(text).replace(/[&<>"']/g, function(m){ return map[m]; });
+}
+
+/* -------------------------
+   Cart operations (localStorage)
+   ------------------------- */
+const CART_KEY = 'vishnu_antq_cart';
+
+function getCart(){
+  try {
+    const raw = localStorage.getItem(CART_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch(e){
+    console.error('Failed to parse cart', e);
+    return [];
+  }
+}
+function saveCart(cart){
+  localStorage.setItem(CART_KEY, JSON.stringify(cart));
+}
+function addToCart(productId, qty){
+  const products = window.getProducts();
+  const p = products.find(x => x.id === productId);
+  if(!p) return;
+  const cart = getCart();
+  const item = cart.find(it => it.id === productId);
+  if(item){
+    item.quantity = (item.quantity || 1) + (qty || 1);
+  } else {
+    cart.push({ id: productId, quantity: qty || 1, name: p.name, price: p.price, image: p.image });
+  }
+  saveCart(cart);
+}
+function removeFromCart(productId){
+  let cart = getCart();
+  cart = cart.filter(it => it.id !== productId);
+  saveCart(cart);
+}
+function updateQuantity(productId, newQty){
+  const cart = getCart();
+  const it = cart.find(i => i.id === productId);
+  if(!it) return;
+  it.quantity = Math.max(1, parseInt(newQty) || 1);
+  saveCart(cart);
+}
+function clearCart(){
+  localStorage.removeItem(CART_KEY);
+}
+
+/* -------------------------
+   Totals and helpers
+   ------------------------- */
+function cartTotalAmount(){
+  const cart = getCart();
+  return cart.reduce((sum, it) => sum + (it.price * (it.quantity || 1)), 0);
+}
+function cartTotalItems(){
+  const cart = getCart();
+  return cart.reduce((sum, it) => sum + (it.quantity || 1), 0);
+}
+function updateNavCartCount(){
+  const el = document.getElementById('nav-cart-count');
+  if(el) el.textContent = cartTotalItems();
+}
+
+/* -------------------------
+   Products Page: render & filters
+   ------------------------- */
+function initProductsPage(){
+  const products = window.getProducts();
+  const listEl = document.getElementById('products-list');
+  const searchInput = document.getElementById('search-input');
+  const catButtons = document.querySelectorAll('.cat-btn');
+
+  function render(items){
+    listEl.innerHTML = '';
+    if(!items.length){
+      listEl.innerHTML = '<p class="muted">No products match your search.</p>';
+      return;
+    }
+    items.forEach(p => {
+      const div = document.createElement('div');
+      div.className = 'product-card';
+      div.innerHTML = `
+        <img src="${p.image}" alt="${escapeHtml(p.name)}">
+        <div class="product-info">
+          <h4>${escapeHtml(p.name)}</h4>
+          <p class="price">${formatINR(p.price)}</p>
+          <div style="display:flex;gap:8px;align-items:center;margin-top:8px;">
+            <button class="btn add-to-cart" data-id="${p.id}">Add to Cart</button>
+            <button class="btn btn-sm" onclick="window.location='products.html#${p.id}'">View</button>
+          </div>
+        </div>
+      `;
+      listEl.appendChild(div);
+    });
+  }
+
+  // initial render
+  render(products);
+
+  // search
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value.trim().toLowerCase();
+    const activeCat = document.querySelector('.cat-btn.active')?.dataset.cat || 'all';
+    const filtered = products.filter(p => {
+      const matchQ = p.name.toLowerCase().includes(q);
+      const matchCat = (activeCat === 'all') || (p.category === activeCat);
+      return matchQ && matchCat;
+    });
+    render(filtered);
+  });
+
+  // category buttons
+  catButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      catButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      // trigger search input's listener to re-render
+      searchInput.dispatchEvent(new Event('input'));
+    });
+  });
+
+  // add-to-cart handler (event delegation)
+  listEl.addEventListener('click', function(e){
+    const btn = e.target.closest('.add-to-cart');
+    if(!btn) return;
+    addToCart(btn.dataset.id, 1);
+    updateNavCartCount();
+    // small feedback
+    btn.textContent = 'Added ✓';
+    setTimeout(()=> btn.textContent = 'Add to Cart', 900);
+  });
+}
+
+/* -------------------------
+   Cart Page: init
+   ------------------------- */
+function initCartPage(){
+  const container = document.getElementById('cart-items');
+  const totalEl = document.getElementById('cart-total');
+  const clearBtn = document.getElementById('clear-cart');
+
+  function renderCart(){
+    const cart = getCart();
+    container.innerHTML = '';
+    if(!cart.length){
+      container.innerHTML = '<p class="muted">Your cart is empty. <a href="products.html">Browse collections</a></p>';
+      totalEl.textContent = formatINR(0);
+      updateNavCartCount();
+      return;
+    }
+    cart.forEach(item => {
+      const row = document.createElement('div');
+      row.className = 'cart-item';
+      row.innerHTML = `
+        <img src="${item.image}" alt="${escapeHtml(item.name)}">
+        <div class="ci-info">
+          <h4>${escapeHtml(item.name)}</h4>
+          <p>${formatINR(item.price)} each</p>
+        </div>
+        <div class="ci-actions">
+          <label>Qty <input type="number" class="qty-input" data-id="${item.id}" value="${item.quantity||1}" min="1"></label>
+          <div style="margin-top:8px;">
+            <button class="btn remove-item" data-id="${item.id}">Remove</button>
+          </div>
+        </div>
+      `;
+      container.appendChild(row);
+    });
+    totalEl.textContent = formatINR(cartTotalAmount());
+    updateNavCartCount();
+  }
+
+  // initial render
+  renderCart();
+
+  // remove handler & qty change (delegation)
+  container.addEventListener('click', function(e){
+    const rem = e.target.closest('.remove-item');
+    if(rem){
+      const id = rem.dataset.id;
+      removeFromCart(id);
+      renderCart();
+      return;
+    }
+  });
+  container.addEventListener('change', function(e){
+    const qty = e.target.closest('.qty-input');
+    if(qty){
+      const id = qty.dataset.id;
+      updateQuantity(id, qty.value);
+      // update total
+      document.getElementById('cart-total').textContent = formatINR(cartTotalAmount());
+      updateNavCartCount();
+    }
+  });
+
+  // clear cart
+  clearBtn.addEventListener('click', function(){
+    if(!confirm('Clear entire cart?')) return;
+    clearCart();
+    renderCart();
+    updateNavCartCount();
+  });
+}
+
+/* -------------------------
+   Payment Page: init
+   ------------------------- */
+function initPaymentPage(){
+  const itemsEl = document.getElementById('checkout-items');
+  const totalEl = document.getElementById('checkout-total');
+  const form = document.getElementById('checkout-form');
+
+  function renderSummary(){
+    const cart = getCart();
+    itemsEl.innerHTML = '';
+    if(!cart.length){
+      itemsEl.innerHTML = '<li>Your cart is empty. <a href="products.html">Shop now</a></li>';
+      totalEl.textContent = formatINR(0);
+      document.querySelector('.place-order').disabled = true;
+      return;
+    }
+    cart.forEach(it => {
+      const li = document.createElement('li');
+      li.textContent = `${it.name} x ${it.quantity || 1} — ${formatINR(it.price * (it.quantity || 1))}`;
+      itemsEl.appendChild(li);
+    });
+    totalEl.textContent = formatINR(cartTotalAmount());
+  }
+
+  renderSummary();
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    // basic validation
+    const fullname = document.getElementById('fullname').value.trim();
+    const mobile = document.getElementById('mobile').value.trim();
+    const address = document.getElementById('address').value.trim();
+    const area = document.getElementById('delivery-area').value;
+    const payment = form.querySelector('input[name="payment"]:checked');
+
+    if(!area || !fullname || !mobile || !address || !payment){
+      alert('Please complete all required fields.');
+      return;
+    }
+
+    // simulate order placement: clear cart and redirect
+    // we could store an order record in localStorage (optional)
+    const order = {
+      id: uid(),
+      createdAt: new Date().toISOString(),
+      fullname, mobile, address, area, payment: payment.value,
+      items: getCart(),
+      total: cartTotalAmount()
+    };
+    // optionally save last order for reference
+    try {
+      localStorage.setItem('vishnu_last_order', JSON.stringify(order));
+    } catch(e){}
+    clearCart();
+    updateNavCartCount();
+    // redirect to thank you
+    window.location = 'thankyou.html';
+  });
+}
+
+/* -------------------------
+   Small helpers for other pages
+   ------------------------- */
+document.addEventListener('DOMContentLoaded', () => {
+  // ensure nav cart count updates early
+  updateNavCartCount();
+});
+
+/* Expose some helpers to global for inline scripts in HTML */
+window.addToCart = addToCart;
+window.updateNavCartCount = updateNavCartCount;
+window.removeFromCart = removeFromCart;
+window.getCart = getCart;
+window.clearCart = clearCart;
+window.initProductsPage = initProductsPage;
+window.initCartPage = initCartPage;
+window.initPaymentPage = initPaymentPage;
+window.formatINR = formatINR;
+window.escapeHtml = escapeHtml;
