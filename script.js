@@ -10,24 +10,24 @@
   // product list available to all pages via window.getProducts()
   const products = [
     // Statues
-    { id: 's1', name: 'Bronze Temple Idol', price: 18500, category: 'Statues', image: 'https://images.unsplash.com/photo-1531095001844-2f5e5f7f3a5b?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=e1bd68b6d71c3a60b3d6147d158e7dd7' },
-    { id: 's2', name: 'Vintage Wooden Krishna Statue', price: 12000, category: 'Statues', image: 'https://images.unsplash.com/photo-1549880338-65ddcdfd017b?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=2e4d5e8f22bbd69cf3e3c4a3cc8b7ae8' },
-    { id: 's3', name: 'Brass Ganesha Idol', price: 9500, category: 'Statues', image: 'https://images.unsplash.com/photo-1542736667-069246bdbc43?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=0e9d0b6062e1d5a4c6de6c780b8f8b2f' },
+    { id: 's1', name: 'Bronze Temple Idol', price: 18500, category: 'Statues', image: 'https://c8.alamy.com/comp/C55B57/antique-pieces-on-sale-in-india-C55B57.jpg' },
+    { id: 's2', name: 'Vintage Wooden Krishna Statue', price: 12000, category: 'Statues', image: 'https://ashtok.com/cdn/shop/files/IMG20231104140218_800x.jpg?v=1699423285' },
+    { id: 's3', name: 'Brass Ganesha Idol', price: 9500, category: 'Statues', image: 'https://www.jaipurcraftonline.com/cdn/shop/files/CPP00175_450x.jpg?v=1688231125' },
 
     // Coins & Currency
-    { id: 'c1', name: 'Ancient Roman Coin Replica', price: 3200, category: 'Coins & Currency', image: 'https://images.unsplash.com/photo-1524594154906-3b8f0d1a5a5a?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=0c8f9da761e1b5f8d39f8adf7d7c1e1c' },
-    { id: 'c2', name: 'Old Indian 1 Rupee Coin (1950s Collection)', price: 2800, category: 'Coins & Currency', image: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=0f3b2b8f5c8a4e3b9d1c2b3a4b5c6d7e' },
-    { id: 'c3', name: 'Vintage World Currency Set', price: 4500, category: 'Coins & Currency', image: 'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=9b2a4e6f5d3c2b1a9f8e7d6c5b4a3f2e' },
+    { id: 'c1', name: 'Ancient Roman Coin Replica', price: 3200, category: 'Coins & Currency', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJmTt1wDI-mQT9FaTF4T34RH-0W0I-D4gfQnveiD5mGHMD6A24YIUTn6zt6PYiEx9IvnU&usqp=CAU' },
+    { id: 'c2', name: 'Old Indian 1 Rupee Coin (1950s Collection)', price: 2800, category: 'Coins & Currency', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSt6pn0dc_uMQcP5jXypX3gfYZvvYlNzDUoYqxUJzUxhZlvIjWb5iD84N_rdyOLHcVfFa0&usqp=CAU' },
+    { id: 'c3', name: 'Vintage World Currency Set', price: 4500, category: 'Coins & Currency', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSXx47fHXo8XdIF03kdiQ9pTrzr-FzklZjPBDqGAdf6DQ78nFL0wkvZxnHfqzjB_aT4z4&usqp=CAU' },
 
     // Vintage Décor
-    { id: 'v1', name: 'Classic Gramophone Showpiece', price: 7800, category: 'Vintage Décor', image: 'https://images.unsplash.com/photo-1527694224015-1d26a4f2a56f?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=1b2f3c4d5e6f7a8b9c0d1e2f3a4b5c6d' },
-    { id: 'v2', name: 'Antique Wall Clock', price: 6900, category: 'Vintage Décor', image: 'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a' },
-    { id: 'v3', name: 'Vintage Lantern Lamp', price: 3600, category: 'Vintage Décor', image: 'https://images.unsplash.com/photo-1508061255064-9b9c9f8a0c4b?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=7a6b5c4d3e2f1a0b9c8d7e6f5b4a3c2d' },
+    { id: 'v1', name: 'Classic Gramophone Showpiece', price: 7800, category: 'Vintage Décor', image: 'https://tiimg.tistatic.com/fp/1/002/787/antique-finish-musical-show-piece-926.jpg' },
+    { id: 'v2', name: 'Antique Wall Clock', price: 6900, category: 'Vintage Décor', image: 'https://www.shutterstock.com/image-photo/kochi-kerala-indiaoctober-6-2022-260nw-2329822385.jpg' },
+    { id: 'v3', name: 'Vintage Lantern Lamp', price: 3600, category: 'Vintage Décor', image: 'https://www.proantic.com/galerie/florin-antiques/img/1398403-main-66e00a5c186db.jpg' },
 
     // Collectible Items
-    { id: 'k1', name: 'Old Classic Book (Collector’s Edition)', price: 2200, category: 'Collectible Items', image: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=2b4c6d8e0f1a3b5c7d9e8f0a1b2c3d4e' },
-    { id: 'k2', name: 'Vintage Ink Pen Set', price: 1900, category: 'Collectible Items', image: 'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=6e5d4c3b2a1f0e9d8c7b6a5f4e3d2c1b' },
-    { id: 'k3', name: 'Handcrafted Wooden Jewelry Box', price: 3300, category: 'Collectible Items', image: 'https://images.unsplash.com/photo-1505691723518-36a5b3b8f6a7?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1' }
+    { id: 'k1', name: 'Old Classic Book (Collector’s Edition)', price: 2200, category: 'Collectible Items', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8p8Ybp6y5_aZS4fprgXy7pa4m9j9KyP2SPslEgF6gT2Wz3zkh9HwbrXn8euGH4xgKe8o&usqp=CAU' },
+    { id: 'k2', name: 'Vintage Ink Pen Set', price: 1900, category: 'Collectible Items', image: 'https://m.media-amazon.com/images/I/71NIc8VkeEL._AC_UF894,1000_QL80_.jpg' },
+    { id: 'k3', name: 'Handcrafted Wooden Jewelry Box', price: 3300, category: 'Collectible Items', image: 'https://craftzone.in/backend/uploads/products/SKU0000003816/18554198aa9649b137dd2008aba4e5a7.webp' }
   ];
 
   // Expose getter
