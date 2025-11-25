@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Checkout — Vishnu’s Antiq Gallery</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-flex">
+      <h1 class="site-title">Vishnu’s Antiq Gallery</h1>
+      <nav class="main-nav">
+        <a href="index.html">Home</a>
+        <a href="products.html">Collections</a>
+        <a href="cart.html" id="nav-cart-link">Cart (<span id="nav-cart-count">0</span>)</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container payment-page">
+    <h2>Checkout</h2>
+
+    <section class="checkout-grid">
+      <div class="order-summary">
+        <h3>Order Summary</h3>
+        <ul id="checkout-items" class="checkout-items"></ul>
+        <p class="checkout-total">Total: <strong id="checkout-total">₹0</strong></p>
+      </div>
+
+      <form id="checkout-form" class="checkout-form">
+        <h3>Delivery & Payment</h3>
+
+        <label for="delivery-area">Delivery Area</label>
+        <select id="delivery-area" required>
+          <option value="">Select area</option>
+          <option>Bangalore</option>
+          <option>KGF</option>
+          <option>Kuppam</option>
+          <option>Erode</option>
+          <option>Chithoor</option>
+        </select>
+
+        <label for="fullname">Full Name</label>
+        <input id="fullname" type="text" placeholder="Your full name" required />
+
+        <label for="mobile">Mobile Number</label>
+        <input id="mobile" type="tel" placeholder="10-digit mobile" pattern="[0-9]{10}" required />
+
+        <label for="address">Full Address</label>
+        <textarea id="address" rows="4" placeholder="Street, City, PIN" required></textarea>
+
+        <fieldset class="payment-options">
+          <legend>Payment Method</legend>
+          <label><input type="radio" name="payment" value="Card" required> Card</label>
+          <label><input type="radio" name="payment" value="UPI"> UPI</label>
+          <label><input type="radio" name="payment" value="COD"> Cash on Delivery</label>
+        </fieldset>
+
+        <button type="submit" class="btn btn-primary place-order">Place Order</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Vishnu’s Antiq Gallery</p>
+    </div>
+  </footer>
+
+  <a class="whatsapp-float" href="https://wa.me/919999999999?text=Hi%20Vishnu%20Gallery%20I%20would%20like%20to%20order%20an%20antique" target="_blank" aria-label="WhatsApp">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
+  </a>
+
+  <script src="script.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    updateNavCartCount();
+    initPaymentPage();
+  </script>
+</body>
+</html>
