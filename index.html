@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Vishnu’s Antiq Gallery</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-flex">
+      <h1 class="site-title">Vishnu’s Antiq Gallery</h1>
+      <nav class="main-nav">
+        <a href="index.html">Home</a>
+        <a href="products.html">Collections</a>
+        <a href="cart.html" id="nav-cart-link">Cart (<span id="nav-cart-count">0</span>)</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <img class="hero-img" src="https://images.unsplash.com/photo-1529070538774-1843cb3265df?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=f0a0d51d9a2bc3a6465d2d7b6bcd0610" alt="Antique artifacts museum">
+      <div class="hero-content container">
+        <h2>Curated antiques & collectibles</h2>
+        <p>Discover authentic antiques, restored with care, each with verified provenance. Handpicked treasures for collectors and lovers of history.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="products.html">Explore Collections</a>
+          <a class="btn" href="products.html">Shop Now</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="highlights container">
+      <div class="highlight-card">
+        <h3>Authentic Antiques</h3>
+        <p>Genuine pieces, curated by experts.</p>
+      </div>
+      <div class="highlight-card">
+        <h3>Verified Provenance</h3>
+        <p>Documented history where available.</p>
+      </div>
+      <div class="highlight-card">
+        <h3>Carefully Restored</h3>
+        <p>Preserved with sensitivity and expertise.</p>
+      </div>
+      <div class="highlight-card">
+        <h3>Pan-India Delivery</h3>
+        <p>Secure packaging & nationwide shipping.</p>
+      </div>
+    </section>
+
+    <section class="featured container">
+      <h2>Featured Picks</h2>
+      <div class="featured-grid" id="featured-grid">
+        <!-- JS will inject a few featured items from product list -->
+      </div>
+    </section>
+
+    <section class="about container">
+      <h2>About Vishnu’s Antiq Gallery</h2>
+      <p>We source, restore and present antiques with respect for heritage. Whether you are a seasoned collector or starting your first collection, our range offers a blend of cultural value and curated aesthetics.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Vishnu’s Antiq Gallery — Handpicked antiques & collectibles.</p>
+    </div>
+  </footer>
+
+  <!-- WhatsApp floating button -->
+  <a class="whatsapp-float" href="https://wa.me/919999999999?text=Hi%20Vishnu%20Gallery%20I%20would%20like%20to%20order%20an%20antique" target="_blank" aria-label="WhatsApp">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
+  </a>
+
+  <script src="script.js"></script>
+  <script>
+    // small inline init for homepage layout usage of common functions
+    document.getElementById('year').textContent = new Date().getFullYear();
+    updateNavCartCount();
+    // show a few featured items on homepage
+    const featuredGrid = document.getElementById('featured-grid');
+    if (featuredGrid && typeof window.getProducts === 'function') {
+      const prods = getProducts().slice(0,4);
+      prods.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'product-card small';
+        card.innerHTML = `
+          <img src="${p.image}" alt="${escapeHtml(p.name)}">
+          <div class="product-info">
+            <h4>${escapeHtml(p.name)}</h4>
+            <p class="price">₹${p.price.toLocaleString('en-IN')}</p>
+            <button class="btn btn-sm add-to-cart" data-id="${p.id}">Add to Cart</button>
+          </div>
+        `;
+        featuredGrid.appendChild(card);
+      });
+      // attach handlers
+      featuredGrid.addEventListener('click', e => {
+        const btn = e.target.closest('.add-to-cart');
+        if (!btn) return;
+        addToCart(btn.dataset.id, 1);
+        updateNavCartCount();
+        alert('Added to cart');
+      });
+    }
+  </script>
+</body>
+</html>
