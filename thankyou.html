@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Thank You — Vishnu’s Antiq Gallery</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-flex">
+      <h1 class="site-title">Vishnu’s Antiq Gallery</h1>
+      <nav class="main-nav">
+        <a href="index.html">Home</a>
+        <a href="products.html">Collections</a>
+        <a href="cart.html" id="nav-cart-link">Cart (<span id="nav-cart-count">0</span>)</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container thankyou-page">
+    <div class="thank-card">
+      <h2>Thank You for Your Order!</h2>
+      <p>Your antique treasures will be packed with utmost care and delivered safely. We’ll contact you with shipping details shortly.</p>
+      <a href="index.html" class="btn btn-primary">Back to Home</a>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Vishnu’s Antiq Gallery</p>
+    </div>
+  </footer>
+
+  <a class="whatsapp-float" href="https://wa.me/919999999999?text=Hi%20Vishnu%20Gallery%20I%20would%20like%20to%20order%20an%20antique" target="_blank" aria-label="WhatsApp">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
+  </a>
+
+  <script src="script.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    updateNavCartCount();
+  </script>
+</body>
+</html>
