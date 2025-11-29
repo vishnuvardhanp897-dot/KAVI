@@ -2,19 +2,20 @@
 <html lang="en">
 <head>
   <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-WYCQL2R1Q9"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WYCQL2R1Q9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-WYCQL2R1Q9');
+  </script>
 
-  gtag('config', 'G-WYCQL2R1Q9');
-</script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Cart — Vishnu’s Antiq Gallery</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
   <header class="site-header">
     <div class="container header-flex">
@@ -29,6 +30,7 @@
 
   <main class="container cart-page">
     <h2>Your Cart</h2>
+
     <div id="cart-items" class="cart-items">
       <!-- items injected by JS -->
     </div>
@@ -36,7 +38,9 @@
     <div class="cart-actions">
       <button id="clear-cart" class="btn">Clear Cart</button>
       <a href="products.html" class="btn">Continue Shopping</a>
-      <a href="https://kavi-two.vercel.app/payment.html>Proceed to Checkout</a>
+
+      <!-- FIXED: Proper closing quote added -->
+      <a href="https://kavi-two.vercel.app/payment.html" class="btn">Proceed to Checkout</a>
     </div>
 
     <div class="cart-total">
